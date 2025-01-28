@@ -32,9 +32,9 @@ class OnboardingViewController: UIViewController {
             counter += 1
             setupUI()
         } else {
-            mainVC.modalPresentationStyle = .fullScreen
+            tabbar.modalPresentationStyle = .fullScreen
             UserDefaults.standard.set(true, forKey: "OnboardingsPassed")
-            present(mainVC, animated: true)
+            present(tabbar, animated: true)
         }
     }
     
