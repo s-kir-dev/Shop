@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if let onboardingsPassed = UserDefaults.standard.object(forKey: "OnboardingsPassed") as? Bool {
             if onboardingsPassed == true {
-                window.rootViewController = mainVC
+                window.rootViewController = tabbar
             }
         }
         

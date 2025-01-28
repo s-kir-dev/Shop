@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  AllProductsViewController.swift
 //  Shop
 //
 //  Created by Кирилл Сысоев on 28.01.2025.
@@ -7,21 +7,20 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class AllProductsViewController: UIViewController {
 
     @IBOutlet weak var filterAll: UIButton!
     @IBOutlet weak var filterOutdoor: UIButton!
     @IBOutlet weak var filterTennis: UIButton!
     @IBOutlet weak var filterRunning: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var viewAll: UIButton!
     
     var products: [Product] = []
     
     var selectedProduct = Products.outdoor[0]
     
     var selectedType: Category = .all
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,11 +32,6 @@ class MainViewController: UIViewController {
         filterOutdoor.addTarget(self, action: #selector(filterOutdoorTapped), for: .touchUpInside)
         filterTennis.addTarget(self, action: #selector(filterTennisTapped), for: .touchUpInside)
         filterRunning.addTarget(self, action: #selector(filterRunningTapped), for: .touchUpInside)
-        viewAll.addTarget(self, action: #selector(viewAllTapped), for: .touchUpInside)
-    }
-    
-    @objc func viewAllTapped() {
-        performSegue(withIdentifier: "allSnickers", sender: nil)
     }
     
     @objc func filterAllTapped() {
@@ -78,9 +72,10 @@ class MainViewController: UIViewController {
         
         collectionView.reloadData()
     }
+
 }
 
-extension MainViewController: UICollectionViewDataSource {
+extension AllProductsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
@@ -100,25 +95,23 @@ extension MainViewController: UICollectionViewDataSource {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "descriptionVC" {
+        if segue.identifier == "showDetails" {
             let destinationVC = segue.destination as! DescriptionViewController
             destinationVC.product = selectedProduct
-        } else if segue.identifier == "allSnickers" {
-            let destinationVC = segue.destination as! AllProductsViewController
-            destinationVC.selectedType = selectedType
         }
     }
 }
 
-extension MainViewController: UICollectionViewDelegate {
+
+extension AllProductsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedProduct = products[indexPath.row]
-        performSegue(withIdentifier: "descriptionVC", sender: self)
+        performSegue(withIdentifier: "showDetails", sender: self)
     }
 }
 
-extension MainViewController: UICollectionViewDelegateFlowLayout {
+extension AllProductsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 122, height: 150)
+        return CGSize(width: collectionView.frame.width / 2.05, height: 150)
     }
 }

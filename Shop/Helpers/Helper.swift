@@ -21,6 +21,8 @@ let mainVC = storyboard.instantiateViewController(withIdentifier: "MainVC") as! 
 
 let tabbar = storyboard.instantiateViewController(withIdentifier: "TabBar") as! UITabBarController
 
+let descriptionVC = storyboard.instantiateViewController(withIdentifier: "DescriptionVC") as! DescriptionViewController
+
 
 enum Category: String, Codable {
     case all = "All"
