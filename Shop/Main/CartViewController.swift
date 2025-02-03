@@ -58,9 +58,35 @@ extension CartViewController: UITableViewDataSource, UITableViewDelegate {
         cell.productImage.image = UIImage(named: cart[indexPath.row].image)
         cell.productName.text = cart[indexPath.row].name
         cell.productPrice.text = "\(cart[indexPath.row].price)₽"
+        cell.selectionStyle = .none
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] _, _, completionHandler in
+            guard let self = self else { return }
+            
+            let removedProduct = cart[indexPath.row]
+            summa -= removedProduct.price
+            finalPrice = summa + deliveryPrice
+
+            cart.remove(at: indexPath.row)
+
+            uploadCart()
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            updateLabels()
+            
+            completionHandler(true)
+        }
+        
+        deleteAction.backgroundColor = .red.withAlphaComponent(0.5)
+        deleteAction.image = UIImage(systemName: "trash.fill")
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 129
