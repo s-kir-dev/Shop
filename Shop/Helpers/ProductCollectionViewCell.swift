@@ -14,4 +14,15 @@ class ProductCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var productPrice: UILabel!
     @IBOutlet weak var addToCartButton: UIButton!
+    
+    var favoriteButtonAction: (() -> Void)?
+    var cartButtonAction: (() -> Void)?
+    
+    @IBAction func addToFavoriteTapped(_ sender: Any) {
+        favoriteButtonAction?()
+    }
+    
+    @IBAction func addToCartTapped(_ sender: Any) {
+        cartButtonAction?()
+    }
 }
