@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class CartViewController: UIViewController {
 
@@ -15,6 +16,8 @@ class CartViewController: UIViewController {
     @IBOutlet weak var finalPriceLabel: UILabel!
     @IBOutlet weak var orderButton: UIButton!
     
+    let db = Firestore.firestore()
+    let email = UserDefaults.standard.string(forKey: "Email") ?? ""
     var summa = 0.00
     var deliveryPrice = 90.00
     var finalPrice = 0.00
@@ -24,7 +27,8 @@ class CartViewController: UIViewController {
 
         cartTable.delegate = self
         cartTable.dataSource = self
-
+        orderButton.addTarget(self, action: #selector(orderButtonTapped), for: .touchUpInside)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +42,33 @@ class CartViewController: UIViewController {
         finalPrice = summa + deliveryPrice
         
         updateLabels()
+    }
+    
+    @objc func orderButtonTapped() {
+        for product in cart {
+            db
+                .collection("Orders")
+                .document(email)
+                .collection("Order price \(finalPrice)₽")
+                .document(product.name + UUID().uuidString)
+                .setData([
+                    "Product name" : "\(product.name)",
+                    "Product price" : "\(product.price)₽",
+                    "Product category" : "\(product.category)",
+                    "Product description" : "\(product.description)",
+                    "Product image" : "\(product.image)"
+                ])
+        }
+        let alert = UIAlertController(title: "Успешно!", message: "Заказ успешно выполнен", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ок", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+        summa = 0.00
+        finalPrice = 0.00
+        cart.removeAll()
+        updateLabels()
+        UserDefaults.standard.removeObject(forKey: "cart")
+        cartTable.reloadData()
     }
     
     func updateLabels() {
