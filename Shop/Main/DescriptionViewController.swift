@@ -96,6 +96,15 @@ class DescriptionViewController: UIViewController {
             }
         }
         
+        cartButtonAction = {
+            cart.append(self.product)
+            uploadCart()
+            let alert = UIAlertController(title: "Успешно", message: "Товар \(self.product.name) успешно добавлен в корзину!", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ок", style: .default)
+            alert.addAction(okAction)
+            self.present(alert, animated: true)
+        }
+        
     }
 
 }

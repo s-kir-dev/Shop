@@ -142,6 +142,15 @@ extension AllProductsViewController: UICollectionViewDataSource {
             }
         }
         
+        cell.cartButtonAction = {
+            cart.append(product)
+            uploadCart()
+            let alert = UIAlertController(title: "Успешно", message: "Товар \(product.name) успешно добавлен в корзину!", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ок", style: .default)
+            alert.addAction(okAction)
+            self.present(alert, animated: true)
+        }
+        
         cell.layer.cornerRadius = 10
         
         return cell
